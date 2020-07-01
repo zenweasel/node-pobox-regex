@@ -1,3 +1,4 @@
+const { expect, describe } = require('@jest/globals');
 const matchAddressByRegex = require('./index.js');
 
 const destination = {
@@ -40,5 +41,32 @@ describe('Should match a simple PO Box', () => {
     };
     const poBoxMatch1 = matchAddressByRegex(destination, shippingAddress);
     expect(poBoxMatch1).toEqual(true);
+  });
+
+  test('should not match regular address', () => {
+    const shippingAddress = {
+      address1: '123 Any Lane',
+      address2: '',
+    };
+    const poBoxMatch1 = matchAddressByRegex(destination, shippingAddress);
+    expect(poBoxMatch1).toEqual(false);
+  });
+
+  test('should not match regular address with the word box in it', () => {
+    const shippingAddress = {
+      address1: '123 Boxworth Lane',
+      address2: '',
+    };
+    const poBoxMatch1 = matchAddressByRegex(destination, shippingAddress);
+    expect(poBoxMatch1).toEqual(false);
+  });
+
+  test('should not match regular address with the word post in it', () => {
+    const shippingAddress = {
+      address1: '123 Post Lane',
+      address2: '',
+    };
+    const poBoxMatch1 = matchAddressByRegex(destination, shippingAddress);
+    expect(poBoxMatch1).toEqual(false);
   });
 });
